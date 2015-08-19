@@ -182,21 +182,26 @@ Meteor.publish("tabular_getInfo", function(tableName, selector, sort, skip, limi
 
   // Handle docs being added or removed from the non-limited set.
   // This allows us to get total count available.
-  var initializing2 = true;
-  var handle2 = countCursor.observeChanges({
-    added: function () {
-      if (initializing2) {
-        return;
-      }
-      updateRecords();
-    },
-    removed: function () {
-      updateRecords();
-    }
-  });
-  initializing2 = false;
+  // console.log("h2 start");
+  // var initializing2 = true;
+  // var handle2 = countCursor.observeChanges({
+  //   added: function () {
+  //     if (initializing2) {
+  //       return;
+  //     }
+  //     updateRecords();
+  //   },
+  //   removed: function () {
+  //     updateRecords();
+  //   }
+  // });
+  // initializing2 = false;
+  // console.log("h2 stop");
+
+  var interval = Meteor.setInterval(updateRecords, ((throttleRefresh || 0) * 1.1) || 100)
 
   updateRecords();
+
   self.ready();
 
   // Stop observing the cursors when client unsubs.
@@ -204,6 +209,7 @@ Meteor.publish("tabular_getInfo", function(tableName, selector, sort, skip, limi
   // care of sending the client any removed messages.
   self.onStop(function () {
     handle1.stop();
-    handle2.stop();
+    // handle2.stop();
+    Meteor.clearInterval(interval);
   });
 });
