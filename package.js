@@ -36,6 +36,8 @@ Package.onUse(function(api) {
     'client/tableInit.js',
     'client/pubSelector.js',
     'client/tabular.js',
+  ], 'client');
+  api.addAssets([
     // images
     'images/sort_asc.png',
     'images/sort_asc_disabled.png',
