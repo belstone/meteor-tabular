@@ -105,6 +105,10 @@ Meteor.publish("tabular_getInfo", function(tableName, selector, sort, skip, limi
     findOptions.sort = sort;
   }
 
+  if (Meteor.settings.public && Meteor.settings.public.env == 'DEVEL') {
+    console.log(selector, findOptions);
+  }
+
   var filteredCursor = table.collection.find(selector, findOptions);
 
   var filteredRecordIds = filteredCursor.map(function (doc) {
