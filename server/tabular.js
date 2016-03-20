@@ -111,10 +111,9 @@ Meteor.publish("tabular_getInfo", function(tableName, selector, sort, skip, limi
     return doc._id;
   });
 
-  var countCursor = table.collection.find(selector, {fields: {_id: 1}});
-
   var recordReady = false;
   var updateRecords = function updateRecords() {
+    var countCursor = table.collection.find(selector, {fields: {_id: 1}, reactive: false});
     var currentCount = countCursor.count();
 
     // From https://datatables.net/manual/server-side
@@ -156,12 +155,12 @@ Meteor.publish("tabular_getInfo", function(tableName, selector, sort, skip, limi
 
       //console.log("ADDED");
       filteredRecordIds.push(id);
-      updateRecords();
+      Meteor.setTimeout(updateRecords, 0);
     },
     removed: function (id) {
       //console.log("REMOVED");
       filteredRecordIds = _.without(filteredRecordIds, id);
-      updateRecords();
+      Meteor.setTimeout(updateRecords, 0);
     }
   });
   initializing = false;
