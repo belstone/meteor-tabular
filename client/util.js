@@ -52,13 +52,18 @@ Util.getMongoSort = function getMongoSort(order, columns) {
 
   // TODO support the nested arrays format for sort
   // and ignore instance functions like "foo()"
-  var sort = [];
-  _.each(order, function (ord) {
-    var propName = columns[ord.column].data;
-    var orderable = columns[ord.column].orderable;
-    if (typeof propName === 'string' && orderable !== false) {
-      sort.push([propName, ord.dir]);
-    }
-  });
-  return sort;
+  try {
+    var sort = [];
+    _.each(order, function (ord) {
+      var propName = columns[ord.column].data;
+      var orderable = columns[ord.column].orderable;
+      if (typeof propName === 'string' && orderable !== false) {
+        sort.push([propName, ord.dir]);
+      }
+    });
+    return sort;
+  } catch (e) {
+    console.warn(e);
+    return [];
+  }
 };
