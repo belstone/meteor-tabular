@@ -106,6 +106,7 @@ Meteor.publish("tabular_getInfo", function(tableName, selector, sort, skip, limi
   }
 
   if (Meteor.settings.public && Meteor.settings.public.env == 'DEVEL') {
+    var cursorStartTime = new Date().getTime();
     console.log(selector, findOptions);
   }
 
@@ -151,6 +152,10 @@ Meteor.publish("tabular_getInfo", function(tableName, selector, sort, skip, limi
   }
 
   updateRecords();
+
+  if (Meteor.settings.public && Meteor.settings.public.env == 'DEVEL') {
+    console.log("Finished load in", new Date().getTime() - cursorStartTime, "ms");
+  }
 
   self.ready();
 
