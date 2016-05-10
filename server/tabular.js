@@ -107,7 +107,7 @@ Meteor.publish("tabular_getInfo", function(tableName, selector, sort, skip, limi
 
   if (Meteor.settings.public && Meteor.settings.public.env == 'DEVEL') {
     var cursorStartTime = new Date().getTime();
-    console.log(selector, findOptions);
+    console.log(JSON.stringify([selector, findOptions]));
   }
 
   var filteredCursor = table.collection.find(selector, findOptions);
